@@ -1,0 +1,170 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 1000px;
+                 height: 1000px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+             #config {
+                 float: left;
+                 width: 400px;
+                 height: 600px;
+             }
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+            <div id="config"></div>
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#97c2fc", "id": "\u010dinnos\u0165", "label": "\u010dinnos\u0165\n(po\u010det dvoj\u00edc: 5)", "shape": "dot"}, {"color": "#97c2fc", "id": "hlavn\u00fd", "label": "hlavn\u00fd\n(po\u010det dvoj\u00edc: 1)", "shape": "dot"}, {"color": "#97c2fc", "id": "jeden", "label": "jeden\n(po\u010det dvoj\u00edc: 2)", "shape": "dot"}, {"color": "#97c2fc", "id": "univerzita", "label": "univerzita\n(po\u010det dvoj\u00edc: 1)", "shape": "dot"}, {"color": "#97c2fc", "id": "v\u00fdskum", "label": "v\u00fdskum\n(po\u010det dvoj\u00edc: 1)", "shape": "dot"}, {"color": "#97c2fc", "id": "zameran\u00fd", "label": "zameran\u00fd\n(po\u010det dvoj\u00edc: 4)", "shape": "dot"}, {"color": "#97c2fc", "id": "z\u00edskava\u0165", "label": "z\u00edskava\u0165\n(po\u010det dvoj\u00edc: 2)", "shape": "dot"}, {"color": "#97c2fc", "id": "v\u00fdsledok", "label": "v\u00fdsledok\n(po\u010det dvoj\u00edc: 5)", "shape": "dot"}, {"color": "#97c2fc", "id": "p\u00f4vodn\u00fd", "label": "p\u00f4vodn\u00fd\n(po\u010det dvoj\u00edc: 1)", "shape": "dot"}, {"color": "#97c2fc", "id": "smeruj\u00faci", "label": "smeruj\u00faci\n(po\u010det dvoj\u00edc: 2)", "shape": "dot"}, {"color": "#97c2fc", "id": "rozvoj", "label": "rozvoj\n(po\u010det dvoj\u00edc: 2)", "shape": "dot"}, {"color": "#97c2fc", "id": "poznanie", "label": "poznanie\n(po\u010det dvoj\u00edc: 1)", "shape": "dot"}, {"color": "#97c2fc", "id": "zah\u0155\u0148a\u0165", "label": "zah\u0155\u0148a\u0165\n(po\u010det dvoj\u00edc: 2)", "shape": "dot"}, {"color": "#97c2fc", "id": "aktivita", "label": "aktivita\n(po\u010det dvoj\u00edc: 2)", "shape": "dot"}, {"color": "#97c2fc", "id": "prepojenie", "label": "prepojenie\n(po\u010det dvoj\u00edc: 5)", "shape": "dot"}, {"color": "#97c2fc", "id": "efekt\u00edvny", "label": "efekt\u00edvny\n(po\u010det dvoj\u00edc: 1)", "shape": "dot"}, {"color": "#97c2fc", "id": "vedeck\u00fd", "label": "vedeck\u00fd\n(po\u010det dvoj\u00edc: 6)", "shape": "dot"}, {"color": "#97c2fc", "id": "b\u00e1danie", "label": "b\u00e1danie\n(po\u010det dvoj\u00edc: 2)", "shape": "dot"}, {"color": "#97c2fc", "id": "vzdel\u00e1vac\u00ed", "label": "vzdel\u00e1vac\u00ed\n(po\u010det dvoj\u00edc: 1)", "shape": "dot"}, {"color": "#97c2fc", "id": "proces", "label": "proces\n(po\u010det dvoj\u00edc: 2)", "shape": "dot"}, {"color": "#97c2fc", "id": "podpora", "label": "podpora\n(po\u010det dvoj\u00edc: 2)", "shape": "dot"}, {"color": "#97c2fc", "id": "odborn\u00fd", "label": "odborn\u00fd\n(po\u010det dvoj\u00edc: 3)", "shape": "dot"}, {"color": "#97c2fc", "id": "rast", "label": "rast\n(po\u010det dvoj\u00edc: 3)", "shape": "dot"}, {"color": "#97c2fc", "id": "zamestnanec", "label": "zamestnanec\n(po\u010det dvoj\u00edc: 1)", "shape": "dot"}, {"color": "#97c2fc", "id": "Vedeckov\u00fdskumn\u00fd", "label": "Vedeckov\u00fdskumn\u00fd\n(po\u010det dvoj\u00edc: 1)", "shape": "dot"}, {"color": "#97c2fc", "id": "uskuto\u010d\u0148ova\u0165", "label": "uskuto\u010d\u0148ova\u0165\n(po\u010det dvoj\u00edc: 3)", "shape": "dot"}, {"color": "#97c2fc", "id": "rie\u0161enie", "label": "rie\u0161enie\n(po\u010det dvoj\u00edc: 5)", "shape": "dot"}, {"color": "#97c2fc", "id": "predov\u0161etk\u00fdm", "label": "predov\u0161etk\u00fdm\n(po\u010det dvoj\u00edc: 1)", "shape": "dot"}, {"color": "#97c2fc", "id": "prostredn\u00edctvom", "label": "prostredn\u00edctvom\n(po\u010det dvoj\u00edc: 1)", "shape": "dot"}, {"color": "#97c2fc", "id": "v\u00fdskumn\u00fd", "label": "v\u00fdskumn\u00fd\n(po\u010det dvoj\u00edc: 3)", "shape": "dot"}, {"color": "#97c2fc", "id": "projekt", "label": "projekt\n(po\u010det dvoj\u00edc: 4)", "shape": "dot"}, {"color": "#97c2fc", "id": "kult\u00farno-eduka\u010dn\u00fd", "label": "kult\u00farno-eduka\u010dn\u00fd\n(po\u010det dvoj\u00edc: 1)", "shape": "dot"}, {"color": "#97c2fc", "id": "v\u00fdstup", "label": "v\u00fdstup\n(po\u010det dvoj\u00edc: 4)", "shape": "dot"}, {"color": "#97c2fc", "id": "pri\u010dom", "label": "pri\u010dom\n(po\u010det dvoj\u00edc: 1)", "shape": "dot"}, {"color": "#97c2fc", "id": "nosn\u00fd", "label": "nosn\u00fd\n(po\u010det dvoj\u00edc: 1)", "shape": "dot"}, {"color": "#97c2fc", "id": "publik\u00e1cia", "label": "publik\u00e1cia\n(po\u010det dvoj\u00edc: 2)", "shape": "dot"}, {"color": "#97c2fc", "id": "Univerzita", "label": "Univerzita\n(po\u010det dvoj\u00edc: 1)", "shape": "dot"}, {"color": "#97c2fc", "id": "organizova\u0165", "label": "organizova\u0165\n(po\u010det dvoj\u00edc: 3)", "shape": "dot"}, {"color": "#97c2fc", "id": "ka\u017edoro\u010dne", "label": "ka\u017edoro\u010dne\n(po\u010det dvoj\u00edc: 1)", "shape": "dot"}, {"color": "#97c2fc", "id": "v\u00fdznamn\u00fd", "label": "v\u00fdznamn\u00fd\n(po\u010det dvoj\u00edc: 1)", "shape": "dot"}, {"color": "#97c2fc", "id": "podujatie", "label": "podujatie\n(po\u010det dvoj\u00edc: 4)", "shape": "dot"}, {"color": "#97c2fc", "id": "umeleck\u00fd", "label": "umeleck\u00fd\n(po\u010det dvoj\u00edc: 1)", "shape": "dot"}, {"color": "#97c2fc", "id": "realizova\u0165", "label": "realizova\u0165\n(po\u010det dvoj\u00edc: 2)", "shape": "dot"}, {"color": "#97c2fc", "id": "prezent\u00e1cia", "label": "prezent\u00e1cia\n(po\u010det dvoj\u00edc: 5)", "shape": "dot"}, {"color": "#97c2fc", "id": "propag\u00e1cia", "label": "propag\u00e1cia\n(po\u010det dvoj\u00edc: 1)", "shape": "dot"}, {"color": "#97c2fc", "id": "prenos", "label": "prenos\n(po\u010det dvoj\u00edc: 1)", "shape": "dot"}, {"color": "#97c2fc", "id": "poznatok", "label": "poznatok\n(po\u010det dvoj\u00edc: 2)", "shape": "dot"}, {"color": "#97c2fc", "id": "dosiahnut\u00fd", "label": "dosiahnut\u00fd\n(po\u010det dvoj\u00edc: 1)", "shape": "dot"}, {"color": "#97c2fc", "id": "vedeckov\u00fdskumn\u00fd", "label": "vedeckov\u00fdskumn\u00fd\n(po\u010det dvoj\u00edc: 1)", "shape": "dot"}]);
+                  edges = new vis.DataSet([{"from": "\u010dinnos\u0165", "to": "hlavn\u00fd"}, {"from": "jeden", "to": "\u010dinnos\u0165"}, {"from": "univerzita", "to": "\u010dinnos\u0165"}, {"from": "v\u00fdskum", "to": "jeden"}, {"from": "zameran\u00fd", "to": "z\u00edskava\u0165"}, {"from": "v\u00fdsledok", "to": "p\u00f4vodn\u00fd"}, {"from": "v\u00fdsledok", "to": "z\u00edskava\u0165"}, {"from": "v\u00fdsledok", "to": "smeruj\u00faci"}, {"from": "smeruj\u00faci", "to": "rozvoj"}, {"from": "poznanie", "to": "rozvoj"}, {"from": "zah\u0155\u0148a\u0165", "to": "zameran\u00fd"}, {"from": "zah\u0155\u0148a\u0165", "to": "aktivita"}, {"from": "zameran\u00fd", "to": "aktivita"}, {"from": "prepojenie", "to": "efekt\u00edvny"}, {"from": "prepojenie", "to": "zameran\u00fd"}, {"from": "vedeck\u00fd", "to": "b\u00e1danie"}, {"from": "prepojenie", "to": "b\u00e1danie"}, {"from": "vzdel\u00e1vac\u00ed", "to": "proces"}, {"from": "prepojenie", "to": "proces"}, {"from": "prepojenie", "to": "podpora"}, {"from": "odborn\u00fd", "to": "rast"}, {"from": "podpora", "to": "rast"}, {"from": "rast", "to": "zamestnanec"}, {"from": "\u010dinnos\u0165", "to": "Vedeckov\u00fdskumn\u00fd"}, {"from": "\u010dinnos\u0165", "to": "uskuto\u010d\u0148ova\u0165"}, {"from": "rie\u0161enie", "to": "predov\u0161etk\u00fdm"}, {"from": "prostredn\u00edctvom", "to": "rie\u0161enie"}, {"from": "rie\u0161enie", "to": "v\u00fdskumn\u00fd"}, {"from": "projekt", "to": "v\u00fdskumn\u00fd"}, {"from": "v\u00fdskumn\u00fd", "to": "kult\u00farno-eduka\u010dn\u00fd"}, {"from": "projekt", "to": "uskuto\u010d\u0148ova\u0165"}, {"from": "v\u00fdstup", "to": "pri\u010dom"}, {"from": "nosn\u00fd", "to": "v\u00fdstup"}, {"from": "uskuto\u010d\u0148ova\u0165", "to": "v\u00fdstup"}, {"from": "publik\u00e1cia", "to": "vedeck\u00fd"}, {"from": "vedeck\u00fd", "to": "odborn\u00fd"}, {"from": "publik\u00e1cia", "to": "v\u00fdstup"}, {"from": "Univerzita", "to": "organizova\u0165"}, {"from": "ka\u017edoro\u010dne", "to": "organizova\u0165"}, {"from": "v\u00fdznamn\u00fd", "to": "podujatie"}, {"from": "podujatie", "to": "vedeck\u00fd"}, {"from": "vedeck\u00fd", "to": "umeleck\u00fd"}, {"from": "podujatie", "to": "organizova\u0165"}, {"from": "podujatie", "to": "realizova\u0165"}, {"from": "prezent\u00e1cia", "to": "realizova\u0165"}, {"from": "prezent\u00e1cia", "to": "propag\u00e1cia"}, {"from": "prenos", "to": "poznatok"}, {"from": "prezent\u00e1cia", "to": "poznatok"}, {"from": "v\u00fdsledok", "to": "dosiahnut\u00fd"}, {"from": "v\u00fdsledok", "to": "prezent\u00e1cia"}, {"from": "rie\u0161enie", "to": "prezent\u00e1cia"}, {"from": "projekt", "to": "vedeckov\u00fdskumn\u00fd"}, {"from": "rie\u0161enie", "to": "projekt"}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": true,
+        "filter": [
+            "physics"
+        ]
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+                  // if this network requires displaying the configure window,
+                  // put it in its div
+                  options.configure["container"] = document.getElementById("config");
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
